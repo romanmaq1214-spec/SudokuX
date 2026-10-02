@@ -1,0 +1,430 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app {
+    width: 100%;
+    max-width: 600px;
+    padding: 1rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4cc9f0;
+}
+
+nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+nav select, nav button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button, select {
+    font: inherit;
+}
+
+nav select:focus, nav button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.game-container {
+    text-align: center;
+}
+
+.timer, .mistakes {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0;
+    width: 100%;
+    aspect-ratio: 1;
+    margin: 1rem auto;
+    background: #0f3460;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cell {
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: all 0.2s ease;
+    padding: 0;
+    cursor: pointer;
+}
+
+.cell.given {
+    color: #4cc9f0;
+    font-weight: bold;
+}
+
+.cell.player {
+    color: #ff9f1c;
+}
+
+.cell.selected {
+    background: rgba(76, 201, 240, 0.3);
+    outline: 2px solid #4cc9f0;
+}
+
+.cell.related {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.cell.same-number {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.cell.correct {
+    color: #4cc9f0;
+}
+
+.cell.incorrect {
+    color: #ff6b6b;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+.cell:hover:not(.given):not(.selected) {
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.number-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.number-pad button {
+    aspect-ratio: 1;
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.number-pad button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.number-pad button:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.number-pad button.disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.controls button:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    color: #4cc9f0;
+}
+
+.win-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+}
+
+.win-stats p {
+    margin: 0;
+}
+
+.win-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.win-buttons button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.win-buttons button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.settings-group {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.settings-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.settings-group select {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    appearance: none;
+}
+
+/* Light theme */
+body.light-theme {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #333;
+}
+
+.light-theme .logo {
+    color: #16213e;
+}
+
+.light-theme nav select, .light-theme nav button {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.light-theme .sudoku-board {
+    background: #e0e0e0;
+}
+
+.light-theme .cell {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.light-theme .cell.given {
+    color: #16213e;
+}
+
+.light-theme .cell.player {
+    color: #ff6b35;
+}
+
+.light-theme .cell.selected {
+    background: rgba(22, 33, 62, 0.2);
+    outline: 2px solid #16213e;
+}
+
+.light-theme .cell.related {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .cell.same-number {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .cell.correct {
+    color: #16213e;
+}
+
+.light-theme .cell.incorrect {
+    color: #ff6b6b;
+}
+
+.light-theme .number-pad button {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.light-theme .number-pad button:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .controls button {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.light-theme .controls button:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .modal-content {
+    background: #ffffff;
+    color: #222;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    #app {
+        padding: 0 1rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    nav select, nav button {
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .timer, .mistakes {
+        font-size: 1rem;
+    }
+
+    .sudoku-board {
+        margin: 0.5rem auto;
+    }
+
+    .cell {
+        font-size: 1.5rem;
+    }
+
+    .number-pad button {
+        font-size: 1.4rem;
+    }
+
+    .controls button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+.number-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .number-pad {
+        grid-template-columns: repeat(9, 1fr);
+    }
+}
+@media (min-width: 768px) {
+    .number-pad {
+        grid-template-columns: repeat(9, 1fr);
+    }
+    
+    .number-pad button {
+        padding: 0.5rem;
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SudokuX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">SudokuX</div>
+            <nav>
+                <select id="difficulty-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="expert">Expert</option>
+                </select>
+                <button id="stats-button">Statistics</button>
+                <button id="settings-button">Settings</button>
+            </nav>
+        </header>
+
+        <main>
+            <div class="game-container">
+                <div class="timer">00:00</div>
+                <div class="mistakes">Mistakes: 0/3</div>
+                <div class="sudoku-board" id="sudoku-board"></div>
+                <div class="number-pad" id="number-pad"></div>
+                <div class="controls">
+                    <button id="undo-button">Undo</button>
+                    <button id="erase-button">Erase</button>
+                    <button id="hint-button">Hint</button>
+                    <button id="new-game-button">New Game</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Win Modal -->
+        <div id="win-modal" class="modal">
+            <div class="modal-content">
+                <h2>🎉 Puzzle Complete!</h2>
+                <div class="win-stats">
+                    <p>Time: <span id="win-time">00:00</span></p>
+                    <p>Mistakes: <span id="win-mistakes">0</span></p>
+                    <p>Difficulty: <span id="win-difficulty">Easy</span></p>
+                </div>
+                <p>Great job!</p>
+                <div class="win-buttons">
+                    <button id="play-again-button">Play Again</button>
+                    <button id="new-puzzle-button">New Puzzle</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Modal -->
+        <div id="stats-modal" class="modal">
+            <div class="modal-content">
+                <h2>Statistics</h2>
+                <div id="stats-content">
+                    <!-- Statistics will be populated here -->
+                </div>
+                <button id="close-stats-button">Close</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <h2>Settings</h2>
+                <div class="settings-group">
+                    <label for="theme-select">Theme:</label>
+                    <select id="theme-select">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="sound-toggle">Sound Effects:</label>
+                    <select id="sound-toggle">
+                        <option value="on">ON</option>
+                        <option value="off">OFF</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="highlight-toggle">Highlight Related Cells:</label>
+                    <select id="highlight-toggle">
+                        <option value="on">ON</option>
+                        <option value="off">OFF</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="zoom-select">Display Scale:</label>
+                    <select id="zoom-select">
+                        <option value="50">50%</option>
+                        <option value="60">60%</option>
+                        <option value="70" selected>70% (Recommended)</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+                <button id="close-settings-button">Close</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
